@@ -117,7 +117,7 @@ class UsuariosController
         $perfil = $_POST['perfil'] ?? 'atendente';
         $status = $_POST['status'] ?? 'ativo';
 
-        if ($nome == '' || $email == '' || $senha == '' || $perfil == '' || $status == '') {
+        if ($nome == '' || $email == '' || $senha == '') {
             http_response_code(400);
             echo json_encode(['error' => 'Nome, Email e Senha são obrigatórios']);
             return;
