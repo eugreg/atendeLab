@@ -1,20 +1,23 @@
 <?php
 
-require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../config/database.php';
 
-require_once __DIR__ . '/../../Middleware/auth.php';
+require_once __DIR__ . '/../Middleware/auth.php';
 
-class AuthController{
+class AuthController
+{
     private PDO $pdo;
 
-    public function __construct(){
+    public function __construct()
+    {
         global $pdo;
 
         $this->pdo = $pdo;
     }
 
-    public function exibirLogin(): void{
-        if(usuarioAutenticado()){
+    public function exibirLogin(): void
+    {
+        if (usuarioAutenticado()) {
             header('Location: ?controller=auth&action=dashboard');
         }
 
@@ -26,17 +29,18 @@ class AuthController{
         require __DIR__ . '/../Views/auth/login.php';
     }
 
-    public function entrar(): void{
+    public function entrar(): void
+    {
 
-        if($_SERVER['REQUEST_METHOD'] !== 'POST'){
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: ?controller=auth&&action=login');
             exit;
         }
 
         $email = trim($_POST['email'] ?? '');
-        $senha = $_post['senha'] ?? '';
-        
-        if($email === '' || $senha === ''){
+        $senha = $_POST['senha'] ?? '';
+
+        if ($email === '' || $senha === '') {
             $_SESSION['erro_login'] = 'Informe um e-mail válido.';
 
             header('Location: ?controller=auth&action=login');
@@ -48,20 +52,22 @@ class AuthController{
                 where email = :email
                 LIMIT 1';
 
-        $stmt = $this->pdo->prepare($sql);
-        
+        $smt = $this->pdo->prepare($sql);
+
         $smt->bindValue(':email', $email);
 
         $smt->execute();
 
         $usuario = $smt->fetch(PDO::FETCH_ASSOC);
 
-        if(!$usuario || $usuario['status'] !== 'ativo'
-        || !password_verify($senha, $usuario['senha'])){
+        if (
+            !$usuario || $usuario['status'] !== 'ativo'
+            || !password_verify($senha, $usuario['senha'])
+        ) {
             $_SESSION['erro_login'] = 'E-mail ou senha inválido.';
 
             header('Location: ?controller=auth&action=login');
-            exit
+            exit;
         }
 
         session_regenerate_id(true);
@@ -73,24 +79,28 @@ class AuthController{
             'perfil' => $usuario['perfil'],
         ];
 
-        
+
         header('Location: ?controller=auth&action=dashboard');
         exit;
     }
 
 
-    public functions dashboard(): void {
+
+
+    public function dashboard(): void
+    {
         exigirAutenticacao();
 
         $usuario = usuarioAtual();
 
-        require __DIR__ . '/../Views/dashboard/index.php'
+        require __DIR__ . '/../Views/dashboard/index.php';
     }
 
-    public function logout(): void{
+    public function logout(): void
+    {
         $_SESSION = [];
 
-        if(ini_get('session.use_cookies')){
+        if (ini_get('session.use_cookies')) {
             $params = session_get_cookie_params();
 
             setcookie(

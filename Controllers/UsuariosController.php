@@ -7,8 +7,7 @@ class UsuariosController
 
     public function __construct()
     {
-        require_once __DIR__ . '/../config/Database.php';
-        $this->pdo = $pdo;
+        $this->pdo = require __DIR__ . '/../config/Database.php';
     }
 
     public function listar(): void
