@@ -5,16 +5,12 @@ require __DIR__ . '/../layouts/header.php';
 <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
     <div>
         <h1 class="h3 mb-1">Dashboard</h1>
-        <p class="text-secondary mb-0">
-            Bem-vindo, <strong><?= htmlspecialchars($usuario['nome'] ?? '', ENT_QUOTES, 'UTF-8') ?></strong>.
-            Perfil: <?= htmlspecialchars($usuario['perfil'] ?? '', ENT_QUOTES, 'UTF-8') ?>
-        </p>
+        <p class="text-secondary mb-0">Resumo simples para validar a integração com o backend.</p>
     </div>
 </div>
-
 <div class="row g-3 mb-4">
     <div class="col-md-4">
-        <div class="card shadow-sm h-100">
+        <div class="card border-0 shadow-sm h-100">
             <div class="card-body">
                 <div class="text-secondary small">Pessoas cadastradas</div>
                 <div class="display-6 fw-semibold" id="totalPessoas">—</div>
@@ -22,7 +18,7 @@ require __DIR__ . '/../layouts/header.php';
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card shadow-sm h-100">
+        <div class="card border-0 shadow-sm h-100">
             <div class="card-body">
                 <div class="text-secondary small">Tipos de atendimento</div>
                 <div class="display-6 fw-semibold" id="totalTipos">—</div>
@@ -30,7 +26,7 @@ require __DIR__ . '/../layouts/header.php';
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card shadow-sm h-100">
+        <div class="card border-0 shadow-sm h-100">
             <div class="card-body">
                 <div class="text-secondary small">Atendimentos registrados</div>
                 <div class="display-6 fw-semibold" id="totalAtendimentos">—</div>
@@ -38,8 +34,7 @@ require __DIR__ . '/../layouts/header.php';
         </div>
     </div>
 </div>
-
-<div class="card shadow-sm">
+<div class="card border-0 shadow-sm">
     <div class="card-body">
         <h2 class="h5">Acesso rápido</h2>
         <p class="text-secondary">Use os módulos abaixo para cadastrar e consultar dados reais do banco.</p>
@@ -52,7 +47,6 @@ require __DIR__ . '/../layouts/header.php';
         </div>
     </div>
 </div>
-
 <script>
     document.addEventListener('DOMContentLoaded', async () => {
         const targets = {
@@ -60,7 +54,6 @@ require __DIR__ . '/../layouts/header.php';
             tipos: document.getElementById('totalTipos'),
             atendimentos: document.getElementById('totalAtendimentos')
         };
-
         for (const [controller, element] of Object.entries(targets)) {
             try {
                 const response = await AtendeLabApi.get(controller, 'listar');

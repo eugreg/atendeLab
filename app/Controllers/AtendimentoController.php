@@ -85,6 +85,7 @@ class AtendimentosController
         $pessoaId = filter_var($_POST['pessoa_id'] ?? null, FILTER_VALIDATE_INT);
         $tipoId = filter_var($_POST['tipo_atendimento_id'] ?? null, FILTER_VALIDATE_INT);
         $usuarioId = filter_var($_POST['usuario_id'] ?? null, FILTER_VALIDATE_INT);
+        $usuarioId = $this->usuarioResponsavel();
         $descricao = trim($_POST['descricao'] ?? '');
         $data = $_POST['data_atendimento'] ?? '';
         $horario = $_POST['horario_atendimento'] ?? '';
@@ -129,13 +130,19 @@ class AtendimentosController
 
         } catch (PDOException $e) {
             if ($e->getCode() === '23000') {
-                $this->json(['erro' => 'pessoa_id, tipo_atendimento_id ou usuario_id inválido.'], 422);
+                $this->json(['erro' => 'pessoa_id, tipo_atendimento ou usuario_id inválido.'], 422);
             } else {
                 $this->json(['erro' => 'Não foi possível registrar o atendimento.'], 500);
             }
         }
     }
-
+    private function usuarioResponsavel(): int
+    {
+        if (isset($_SESSION['usuario']['id'])) {
+            return (int) $_SESSION['usuario']['id'];
+        }
+        return (int) filter_var($_POST['usuario_id'] ?? null, FILTER_VALIDATE_INT);
+    }
     public function alterarStatus(): void
     {
         $id = filter_var($_POST['id'] ?? null, FILTER_VALIDATE_INT);
